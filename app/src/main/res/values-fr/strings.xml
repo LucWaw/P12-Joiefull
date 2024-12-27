@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">P12_Joiefull</string>
+    <string name="average_star">Nombre moyen d\'étoiles</string>
+    <string name="add_to_favorite">Ajouter aux favoris</string>
+</resources>

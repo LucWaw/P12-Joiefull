@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">P12_Joiefull</string>
+    <string name="average_star">Average number of star</string>
+    <string name="add_to_favorite">Add To Favorite</string>
 </resources>
