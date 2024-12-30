@@ -1,7 +1,5 @@
 package com.openclassrooms.p12_joiefull.data.repository
 
-import com.openclassrooms.p12_joiefull.data.response.ResponseApiClothing
-import com.openclassrooms.p12_joiefull.domain.ClothingResponseModel
 import com.openclassrooms.p12_joiefull.domain.util.NetworkError
 import retrofit2.Response
 import java.nio.channels.UnresolvedAddressException
@@ -11,9 +9,9 @@ import com.squareup.moshi.JsonEncodingException
 import kotlinx.coroutines.ensureActive
 import kotlin.coroutines.coroutineContext
 
-suspend inline fun safeCall(
-    execute: () -> Response<ResponseApiClothing>
-): Result<List<ClothingResponseModel>, NetworkError> {
+suspend inline fun <reified T> safeCall(
+    execute: () -> Response<T>
+): Result<T, NetworkError> {
     val response = try {
         execute()
     } catch (e: UnresolvedAddressException) {

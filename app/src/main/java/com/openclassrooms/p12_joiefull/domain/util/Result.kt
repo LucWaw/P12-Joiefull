@@ -12,7 +12,8 @@ inline fun <T, E : Error, R> Result<T, E>.map(map: (T) -> R): Result<R, E> {
     return when (this) {
         is Result.Error -> Result.Error(error)
         is Result.Success -> Result.Success(map(data))
-        is Result.Loading -> Result.Loading // Propagation de l'état de chargement
+        is Result.Loading -> Result.Loading
+
     }
 }
 

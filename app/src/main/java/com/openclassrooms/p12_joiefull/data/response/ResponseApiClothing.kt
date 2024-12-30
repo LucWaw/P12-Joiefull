@@ -1,7 +1,7 @@
 package com.openclassrooms.p12_joiefull.data.response
 
 
-import com.openclassrooms.p12_joiefull.domain.ClothingResponseModel
+import com.openclassrooms.p12_joiefull.domain.Clothing
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -31,20 +31,19 @@ class ResponseApiClothing : ArrayList<ResponseApiClothing.ResponseApiClothingIte
             val url: String
         )
     }
-    fun toClothingResponseModel(): List<ClothingResponseModel> {
-        return map {
-            ClothingResponseModel(
-                category = it.category,
-                id = it.id,
-                likes = it.likes,
-                name = it.name,
-                originalPrice = it.originalPrice,
-                picture = ClothingResponseModel.Picture(
-                    description = it.picture.description,
-                    url = it.picture.url
-                ),
-                price = it.price
-            )
-        }
-    }
+
 }
+
+fun ResponseApiClothing.ResponseApiClothingItem.toClothing(): Clothing =
+    Clothing(
+        category = category,
+        id = id,
+        likes = likes,
+        name = name,
+        originalPrice = originalPrice,
+        picture = Clothing.Picture(
+            description = picture.description,
+            url = picture.url
+        ),
+        price = price
+    )
