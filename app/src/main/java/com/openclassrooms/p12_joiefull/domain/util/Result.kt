@@ -43,4 +43,15 @@ inline fun <T, E : Error> Result<T, E>.onError(action: (E) -> Unit): Result<T, E
     }
 }
 
+inline fun <T, E : Error> Result<T, E>.onLoading(action: () -> Unit): Result<T, E> {
+    return when (this) {
+        is Result.Error -> this
+        is Result.Success -> this
+        is Result.Loading -> {
+            action()
+            this
+        }
+    }
+}
+
 typealias EmptyResult<E> = Result<Unit, E>

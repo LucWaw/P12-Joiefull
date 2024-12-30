@@ -1,4 +1,4 @@
-package com.openclassrooms.p12_joiefull.ui.components
+package com.openclassrooms.p12_joiefull.ui.clothingList.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,19 +34,19 @@ import com.openclassrooms.p12_joiefull.R
 
 
 @Composable
-fun CardClothe(modifier: Modifier = Modifier) {
+fun ClothingCard(modifier: Modifier = Modifier) {
     val fontSize = 14.sp
     val fontSizeDP: Dp = with(LocalDensity.current) {
         fontSize.toDp() + 3.dp
     }
     Column(modifier = modifier.width(198.dp)) {
         ImageWithFavoriteButton()
-        ClotheInformations(fontSize, fontSizeDP)
+        ClothingInformations(fontSize, fontSizeDP)
     }
 }
 
 @Composable
-private fun ClotheInformations(
+private fun ClothingInformations(
     fontSize: TextUnit,
     fontSizeDP: Dp,
     modifier: Modifier = Modifier

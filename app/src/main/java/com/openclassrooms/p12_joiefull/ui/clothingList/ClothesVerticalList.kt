@@ -1,4 +1,4 @@
-package com.openclassrooms.p12_joiefull.ui
+package com.openclassrooms.p12_joiefull.ui.clothingList
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -10,7 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.openclassrooms.p12_joiefull.ui.components.CardClothe
+import com.openclassrooms.p12_joiefull.ui.clothingList.components.ClothingCard
 import com.openclassrooms.p12_joiefull.ui.theme.P12_JoiefullTheme
 
 
@@ -26,7 +26,7 @@ fun ClothesVerticalList(modifier: Modifier = Modifier) {
 fun ClothesList(modifier: Modifier = Modifier) {
     LazyRow(modifier = modifier) {
         items(10) {
-            CardClothe(modifier = Modifier.padding(8.dp))
+            ClothingCard(modifier = Modifier.padding(8.dp))
         }
     }
 }

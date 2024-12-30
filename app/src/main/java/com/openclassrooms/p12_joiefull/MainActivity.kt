@@ -8,9 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.openclassrooms.p12_joiefull.ui.ClothesVerticalList
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.openclassrooms.p12_joiefull.ui.clothingList.ClothesVerticalList
+import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingViewModel
 import com.openclassrooms.p12_joiefull.ui.theme.P12_JoiefullTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             P12_JoiefullTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    val viewModel = hiltViewModel<ClothingViewModel>()
                     ClothesVerticalList(modifier = Modifier.padding(innerPadding))
                 }
             }
