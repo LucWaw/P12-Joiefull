@@ -1,5 +1,6 @@
 package com.openclassrooms.p12_joiefull.data.repository
 
+import android.util.Log
 import com.openclassrooms.p12_joiefull.domain.util.NetworkError
 import retrofit2.Response
 import java.nio.channels.UnresolvedAddressException
@@ -17,8 +18,12 @@ suspend inline fun <reified T> safeCall(
     } catch (e: UnresolvedAddressException) {
         return Result.Error(NetworkError.NO_INTERNET)
     } catch (e: JsonDataException) {
+        Log.d("safeCall", e.toString())
+
         return Result.Error(NetworkError.SERIALIZATION)
     } catch (e: JsonEncodingException) {
+        Log.d("safeCall", e.toString())
+
         return Result.Error(NetworkError.SERIALIZATION)
     } catch (e: Exception) {
         coroutineContext.ensureActive()

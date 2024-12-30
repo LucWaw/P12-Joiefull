@@ -1,7 +1,7 @@
 package com.openclassrooms.p12_joiefull.data.repository
 
 import com.openclassrooms.p12_joiefull.data.network.ClothingApi
-import com.openclassrooms.p12_joiefull.data.response.ResponseApiClothing
+import com.openclassrooms.p12_joiefull.data.response.ResponseApiClothingItem
 import com.openclassrooms.p12_joiefull.data.response.toClothing
 import com.openclassrooms.p12_joiefull.domain.Clothing
 import com.openclassrooms.p12_joiefull.domain.util.NetworkError
@@ -19,7 +19,7 @@ class ClothingRepository(private val clothingClient: ClothingApi) {
         flow {
             emit(Result.Loading)
 
-            val result = safeCall<ResponseApiClothing> {
+            val result = safeCall<List<ResponseApiClothingItem>> {
                 clothingClient.getClothes()
             }.map {response ->
                 response.map { it.toClothing()}

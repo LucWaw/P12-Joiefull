@@ -31,30 +31,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.openclassrooms.p12_joiefull.R
+import com.openclassrooms.p12_joiefull.domain.Clothing
 
 
 @Composable
-fun ClothingCard(modifier: Modifier = Modifier) {
+fun ClothingCard(clothing: Clothing, modifier: Modifier = Modifier) {
     val fontSize = 14.sp
     val fontSizeDP: Dp = with(LocalDensity.current) {
         fontSize.toDp() + 3.dp
     }
     Column(modifier = modifier.width(198.dp)) {
-        ImageWithFavoriteButton()
-        ClothingInformations(fontSize, fontSizeDP)
+        ImageWithFavoriteButton(clothing.picture, clothing.likes)
+        ClothingInformations(clothing.price, clothing.name, clothing.originalPrice, fontSize, fontSizeDP)
     }
 }
 
 @Composable
 private fun ClothingInformations(
+    price: Double,
+    name: String,
+    originalPrice: Double,
     fontSize: TextUnit,
     fontSizeDP: Dp,
     modifier: Modifier = Modifier
 ) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(8.dp)) {
         Column {
-            Text("Veste urbaine", fontSize = fontSize, fontWeight = FontWeight.Bold)
-            Text("89€", fontSize = fontSize)
+            Text(name, fontSize = fontSize, fontWeight = FontWeight.Bold, modifier = Modifier.width(130.dp), maxLines = 1)
+            Text("${price}€", fontSize = fontSize)
         }
         Spacer(modifier = Modifier.weight(1f))
         Column(horizontalAlignment = Alignment.End) {
@@ -76,7 +80,7 @@ private fun ClothingInformations(
             Text(
                 modifier = Modifier.alpha(0.7f),
                 textDecoration = TextDecoration.LineThrough,
-                text = "120€",
+                text = "${originalPrice}€",
                 fontSize = fontSize
             )
 
@@ -85,7 +89,7 @@ private fun ClothingInformations(
 }
 
 @Composable
-fun ImageWithFavoriteButton(modifier: Modifier = Modifier) {
+fun ImageWithFavoriteButton(picture: Clothing.Picture, likeNumber: Int,  modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         AsyncImage(
             contentScale = ContentScale.Crop,
@@ -93,11 +97,12 @@ fun ImageWithFavoriteButton(modifier: Modifier = Modifier) {
                 .aspectRatio(1f)  // This ensures a square aspect ratio
                 .clip(RoundedCornerShape(20.dp))
                 .align(Alignment.Center),
-            model = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/tops/3.jpg",
-            contentDescription = "Placeholder TODO",
+            model = picture.url,
+            contentDescription = picture.description,
         )
 
         AddToFavoriteElement(
+            likeNumber,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(12.dp)
@@ -108,7 +113,7 @@ fun ImageWithFavoriteButton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AddToFavoriteElement(modifier: Modifier = Modifier) {
+fun AddToFavoriteElement(likeNumber: Int, modifier: Modifier = Modifier) {
     val fontSize = 14.sp
     val fontSizeDP: Dp = with(LocalDensity.current) {
         fontSize.toDp() + 3.dp
@@ -128,6 +133,6 @@ fun AddToFavoriteElement(modifier: Modifier = Modifier) {
             modifier = Modifier.size(fontSizeDP)
         )
         Spacer(modifier = Modifier.width(4.dp))
-        Text("24", fontSize = fontSize)
+        Text(likeNumber.toString(), fontSize = fontSize)
     }
 }

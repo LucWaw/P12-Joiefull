@@ -16,13 +16,14 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class ClothingViewModel(private val repository: ClothingRepository) : ViewModel() {
+class ClothingViewModel @Inject constructor( private val repository: ClothingRepository) : ViewModel() {
     private val _state = MutableStateFlow(ClothingListState())
     val state = _state
         .onStart {
-            loadCoins()
+            loadClothing()
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000L),
@@ -43,26 +44,25 @@ class ClothingViewModel(private val repository: ClothingRepository) : ViewModel(
         }
     }
 
-    private fun loadCoins() {
+    private fun loadClothing() {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true) }
             repository.callClothingApi().onEach { result ->
                 result.onLoading {
                     _state.update { it.copy(isLoading = true) }
                 }
-                result.onError {
-                    _events.send(ClothingListEvent.Error(it))
-                    _state.update { it.copy(isLoading = false) }
+                result.onError { error ->
+                    _events.send(ClothingListEvent.Error(error))
+                    _state.update { it.copy(isLoading = true) }
                 }
-                result.onSuccess { clothings ->
+                result.onSuccess { clothes ->
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            clothings
+                            clothing = clothes
                         )
                     }
                 }
-            }
+            }.collect {}
         }
     }
 }
