@@ -3,6 +3,7 @@ package com.openclassrooms.p12_joiefull.ui.clothingList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.p12_joiefull.data.repository.ClothingRepository
+import com.openclassrooms.p12_joiefull.domain.Clothing
 import com.openclassrooms.p12_joiefull.domain.util.onError
 import com.openclassrooms.p12_joiefull.domain.util.onLoading
 import com.openclassrooms.p12_joiefull.domain.util.onSuccess
@@ -55,10 +56,33 @@ class ClothingViewModel @Inject constructor( private val repository: ClothingRep
                     _state.update { it.copy(isLoading = true) }
                 }
                 result.onSuccess { clothes ->
+                    val listOfCategories: MutableList<MutableList<Clothing>> = MutableList(4) { mutableListOf() }
+
+                    clothes.forEach { clothing ->
+                        when (clothing.category){
+                            "TOPS" -> {
+                                listOfCategories[0].add(clothing)
+                            }
+                            "BOTTOMS" -> {
+                                listOfCategories[1].add(clothing)
+                            }
+                            "ACCESSORIES" -> {
+                                listOfCategories[2].add(clothing)
+                            }
+                            "SHOES" -> {
+                                listOfCategories[3].add(clothing)
+                            }
+                            else -> {
+                                isOutOfCategory(clothing, listOfCategories)
+                            }
+                        }
+                    }
+
+
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            clothing = clothes
+                            clothing = listOfCategories
                         )
                     }
                 }
@@ -66,3 +90,28 @@ class ClothingViewModel @Inject constructor( private val repository: ClothingRep
         }
     }
 }
+
+private fun isOutOfCategory(
+    clothing: Clothing,
+    listOfCategories: MutableList<MutableList<Clothing>>
+) {
+    if (listOfCategories.isEmpty()) {
+        //if the list is empty, add the first category
+        listOfCategories.add(mutableListOf(clothing))
+    } else {
+        var isCategoryFound = false
+        for (category in listOfCategories) {
+            // if the category is already in the list, add the clothing to the category
+            if (category[0].category == clothing.category) { //all the clothing in the same category have the same category name
+                category.add(clothing)
+                isCategoryFound = true
+                break
+            }
+        }
+        // if the category is not in the list, add the category to the list
+        if (!isCategoryFound) {
+            listOfCategories.add(mutableListOf(clothing))
+        }
+    }
+}
+

@@ -8,4 +8,9 @@
     <string name="error_unknown">Something went wrong. Please try again later</string>
     <string name="error_serialization">Couldn\'t serialize or deserialize data.</string>
     <string name="error_server">Server Error. Please try again later.</string>
+    <string name="Clothing">Clothing</string>
+    <string name="tops">Tops</string>
+    <string name="bottoms">Bottoms</string>
+    <string name="shoes">Shoes</string>
+    <string name="accessories">Accessories</string>
 </resources>

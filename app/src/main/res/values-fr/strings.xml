@@ -9,4 +9,9 @@
     <string name="error_unknown">Un problème s\'est produit. Veuillez réessayer plus tard</string>
     <string name="error_serialization">Impossible de sérialiser ou de désérialiser les données.</string>
     <string name="error_server">Erreur du serveur. Veuillez réessayer plus tard.</string>
+    <string name="Clothing">Vetements</string>
+    <string name="tops">Hauts</string>
+    <string name="bottoms">Bas</string>
+    <string name="shoes">Chaussures</string>
+    <string name="accessories">Sacs</string>
 </resources>

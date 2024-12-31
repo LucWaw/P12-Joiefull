@@ -40,7 +40,7 @@ fun ClothingCard(clothing: Clothing, modifier: Modifier = Modifier) {
     val fontSizeDP: Dp = with(LocalDensity.current) {
         fontSize.toDp() + 3.dp
     }
-    Column(modifier = modifier.width(198.dp)) {
+    Column(modifier = modifier.width(200.dp)) {
         ImageWithFavoriteButton(clothing.picture, clothing.likes)
         ClothingInformations(clothing.price, clothing.name, clothing.originalPrice, fontSize, fontSizeDP)
     }
