@@ -2,16 +2,18 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.dagger.hilt)
 }
 
 android {
     namespace = "com.openclassrooms.p12_joiefull"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.openclassrooms.p12_joiefull"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -40,8 +42,24 @@ android {
 }
 
 dependencies {
+    // Dagger Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
+
+    // Moshi JSON Library
+    implementation(libs.moshi.kotlin)
+
+
+    // Retrofit for Network Requests
+    implementation(libs.retrofit)
+    implementation(libs.logging.interceptor)
+    implementation(libs.converter.moshi)
+
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
