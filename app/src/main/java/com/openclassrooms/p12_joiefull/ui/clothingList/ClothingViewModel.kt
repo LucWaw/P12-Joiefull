@@ -4,92 +4,78 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.p12_joiefull.data.repository.ClothingRepository
 import com.openclassrooms.p12_joiefull.domain.Clothing
-import com.openclassrooms.p12_joiefull.domain.util.onError
-import com.openclassrooms.p12_joiefull.domain.util.onLoading
-import com.openclassrooms.p12_joiefull.domain.util.onSuccess
+import com.openclassrooms.p12_joiefull.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ClothingViewModel @Inject constructor( private val repository: ClothingRepository) : ViewModel() {
-    private val _state = MutableStateFlow(ClothingListState())
-    val state = _state
-        .onStart {
-            loadClothing()
-        }.stateIn(
+class ClothingViewModel @Inject constructor(private val repository: ClothingRepository) :
+    ViewModel() {
+
+    val state: StateFlow<ClothingListState> = loadClothing()
+        .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000L),
             initialValue = ClothingListState()
         )
 
-
     private val _events = Channel<ClothingListEvent>()
     val events = _events.receiveAsFlow()
-
 
     fun onAction(action: ClothingListAction) {
         when (action) {
             is ClothingListAction.OnCoinClick -> {
-                // Handle coin click
             }
-
         }
     }
 
-    private fun loadClothing() {
-        viewModelScope.launch {
-            repository.callClothingApi().onEach { result ->
-                result.onLoading {
-                    _state.update { it.copy(isLoading = true) }
-                }
-                result.onError { error ->
-                    _events.send(ClothingListEvent.Error(error))
-                    _state.update { it.copy(isLoading = true) }
-                }
-                result.onSuccess { clothes ->
-                    val listOfCategories: MutableList<MutableList<Clothing>> = MutableList(4) { mutableListOf() }
-
-                    clothes.forEach { clothing ->
-                        when (clothing.category){
-                            "TOPS" -> {
-                                listOfCategories[0].add(clothing)
-                            }
-                            "BOTTOMS" -> {
-                                listOfCategories[1].add(clothing)
-                            }
-                            "ACCESSORIES" -> {
-                                listOfCategories[2].add(clothing)
-                            }
-                            "SHOES" -> {
-                                listOfCategories[3].add(clothing)
-                            }
-                            else -> {
-                                isOutOfCategory(clothing, listOfCategories)
-                            }
-                        }
+    private fun loadClothing(): Flow<ClothingListState> {
+        return repository.callClothingApi()
+            .map { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        ClothingListState(isLoading = true)
                     }
 
+                    is Result.Error -> {
+                        _events.send(ClothingListEvent.Error(result.error))
 
-                    _state.update {
-                        it.copy(
+                        ClothingListState(isLoading = true)
+                    }
+
+                    is Result.Success -> {
+                        val listOfCategories = categorizeClothing(result.data)
+                        ClothingListState(
                             isLoading = false,
                             clothing = listOfCategories
                         )
                     }
                 }
-            }.collect {}
+            }
+    }
+
+    private fun categorizeClothing(clothes: List<Clothing>): List<MutableList<Clothing>> {
+        val listOfCategories = MutableList(4) { mutableListOf<Clothing>() }
+        clothes.forEach { clothing ->
+            when (clothing.category) {
+                "TOPS" -> listOfCategories[0].add(clothing)
+                "BOTTOMS" -> listOfCategories[1].add(clothing)
+                "ACCESSORIES" -> listOfCategories[2].add(clothing)
+                "SHOES" -> listOfCategories[3].add(clothing)
+                else -> isOutOfCategory(clothing, listOfCategories)
+            }
         }
+        return listOfCategories
     }
 }
+
 
 private fun isOutOfCategory(
     clothing: Clothing,
