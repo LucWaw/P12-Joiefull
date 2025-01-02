@@ -42,7 +42,9 @@ fun ClothingCard(
             clothing.originalPrice,
             fontSize,
             fontSizeDP,
-            contentPadding = PaddingValues(8.dp)
+            contentPadding = PaddingValues(8.dp),
+            130.dp,
+            1
         )
     }
 }

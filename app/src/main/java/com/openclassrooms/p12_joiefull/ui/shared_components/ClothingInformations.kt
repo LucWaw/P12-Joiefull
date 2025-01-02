@@ -32,6 +32,8 @@ fun ClothingInformations(
     fontSize: TextUnit,
     fontSizeDP: Dp,
     contentPadding: PaddingValues,
+    textWidth: Dp,
+    maxLines: Int,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -43,8 +45,8 @@ fun ClothingInformations(
                 name,
                 fontSize = fontSize,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.width(130.dp),
-                maxLines = 1
+                modifier = Modifier.width(textWidth),
+                maxLines = maxLines
             )
             Text("${price}€", fontSize = fontSize)
         }

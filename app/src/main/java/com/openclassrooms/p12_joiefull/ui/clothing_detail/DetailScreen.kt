@@ -63,7 +63,9 @@ fun DetailScreen(clothing: Clothing, modifier: Modifier = Modifier) {
             clothing.originalPrice,
             fontSize,
             fontSizeDP,
-            contentPadding = PaddingValues(top = 24.dp, bottom = 12.dp)
+            contentPadding = PaddingValues(top = 24.dp, bottom = 12.dp),
+            textWidth = 250.dp,
+            maxLines = 2
         )
 
         Text(text = "${clothing.picture.description}.", fontSize = 14.sp)
