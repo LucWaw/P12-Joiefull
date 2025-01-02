@@ -13,4 +13,8 @@
     <string name="bottoms">Bottoms</string>
     <string name="shoes">Shoes</string>
     <string name="accessories">Accessories</string>
+    <string name="share">Share</string>
+    <string name="back">Go Back</string>
+    <string name="ratingStar">Rating star</string>
+    <string name="share_comment">Share your impressions of this piece here</string>
 </resources>
