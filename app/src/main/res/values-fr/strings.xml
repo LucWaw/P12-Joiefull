@@ -14,4 +14,8 @@
     <string name="bottoms">Bas</string>
     <string name="shoes">Chaussures</string>
     <string name="accessories">Sacs</string>
+    <string name="share">Partager</string>
+    <string name="back">Retour</string>
+    <string name="ratingStar">Etoile notation</string>
+    <string name="share_comment">Partagez ici vos impressions sur cette pièce</string>
 </resources>

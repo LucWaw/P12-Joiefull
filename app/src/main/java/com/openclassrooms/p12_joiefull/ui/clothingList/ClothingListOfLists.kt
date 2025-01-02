@@ -15,7 +15,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.openclassrooms.p12_joiefull.R
 
 @Composable
-fun ClothingListOfLists(state: ClothingListState, modifier: Modifier = Modifier) {
+fun ClothingListOfLists(
+    state: ClothingListState,
+    onAction: (ClothingListAction) -> Unit,
+    modifier: Modifier = Modifier
+) {
     if (state.isLoading) {
         LoadingScreen()
     } else {
@@ -23,7 +27,10 @@ fun ClothingListOfLists(state: ClothingListState, modifier: Modifier = Modifier)
             modifier = modifier
         ) {
             items(state.clothing) { category ->
-                ClothingVerticalList(clothes = category)
+                ClothingVerticalList(
+                    onAction = onAction,
+                    clothes = category
+                )
             }
         }
 

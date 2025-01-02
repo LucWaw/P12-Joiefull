@@ -18,6 +18,7 @@ import com.openclassrooms.p12_joiefull.ui.ObserveAsEvents
 import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingListEvent
 import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingListOfLists
 import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingViewModel
+import com.openclassrooms.p12_joiefull.ui.clothing_detail.DetailScreen
 import com.openclassrooms.p12_joiefull.ui.theme.P12_JoiefullTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,6 +32,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val viewModel = hiltViewModel<ClothingViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
+                    val clothingState by viewModel.selectedClothing.collectAsStateWithLifecycle()
                     val context = LocalContext.current
                     ObserveAsEvents(events = viewModel.events) { event ->
                         when (event) {
@@ -43,12 +45,22 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
-
-
-                    ClothingListOfLists(
-                        state = state,
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    val clothing = clothingState
+                    when{
+                        clothing != null -> {
+                            DetailScreen(
+                                clothing = clothing,
+                                modifier = Modifier.padding(innerPadding)
+                            )
+                        }
+                        else -> {
+                            ClothingListOfLists(
+                                state = state,
+                                modifier = Modifier.padding(innerPadding),
+                                onAction= viewModel::onAction
+                            )
+                        }
+                    }
                 }
             }
         }

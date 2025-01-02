@@ -45,6 +45,7 @@ dependencies {
     // Dagger Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.adaptive.navigation.android)
     ksp(libs.hilt.compiler)
 
     // Moshi JSON Library

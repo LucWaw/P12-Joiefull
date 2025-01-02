@@ -8,11 +8,14 @@ import com.openclassrooms.p12_joiefull.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,12 +29,20 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
             initialValue = ClothingListState()
         )
 
+    private val _selectedClothing : MutableStateFlow<Clothing?> = MutableStateFlow(null)
+    val selectedClothing: StateFlow<Clothing?> = _selectedClothing.asStateFlow()
+
+
     private val _events = Channel<ClothingListEvent>()
     val events = _events.receiveAsFlow()
 
     fun onAction(action: ClothingListAction) {
         when (action) {
             is ClothingListAction.OnCoinClick -> {
+                //change selected clothing
+                _selectedClothing.update {
+                    action.clothing
+                }
             }
         }
     }

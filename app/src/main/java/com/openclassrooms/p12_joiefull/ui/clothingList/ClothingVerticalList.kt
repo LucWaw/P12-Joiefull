@@ -17,18 +17,19 @@ import com.openclassrooms.p12_joiefull.ui.clothingList.components.ClothingCard
 
 
 @Composable
-fun ClothingVerticalList(clothes: List<Clothing>, modifier: Modifier = Modifier) {
+fun ClothingVerticalList(clothes: List<Clothing>,    onAction: (ClothingListAction) -> Unit,
+                         modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(stringResource(clothes[0].category.toRessourceString()), fontSize = 22.sp, fontWeight = FontWeight.Bold)
-        ClothesList(clothes)
+        ClothesList(onAction = onAction,clothes)
     }
 }
 
 @Composable
-fun ClothesList(clothes: List<Clothing>, modifier: Modifier = Modifier) {
+fun ClothesList(onAction: (ClothingListAction) -> Unit, clothes: List<Clothing>, modifier: Modifier = Modifier) {
     LazyRow(modifier = modifier) {
         items(clothes) { clothing ->
-            ClothingCard(clothing, modifier = Modifier.padding(0.dp,8.dp,8.dp, 0.dp))
+            ClothingCard(clothing, onClick = { onAction(ClothingListAction.OnCoinClick(clothing)) }, modifier = Modifier.padding(0.dp,8.dp,8.dp, 0.dp))
         }
     }
 }
