@@ -34,7 +34,7 @@ fun ClothingCard(
     }
     Column(modifier = modifier
         .clickable(onClick = onClick)
-        .width(200.dp)) {
+        .width(202.dp)) {
         ImageWithFavoriteButton(clothing.picture, clothing.likes)
         ClothingInformations(
             clothing.price,

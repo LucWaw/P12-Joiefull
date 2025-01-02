@@ -29,7 +29,7 @@ fun ClothingVerticalList(clothes: List<Clothing>,    onAction: (ClothingListActi
 fun ClothesList(onAction: (ClothingListAction) -> Unit, clothes: List<Clothing>, modifier: Modifier = Modifier) {
     LazyRow(modifier = modifier) {
         items(clothes) { clothing ->
-            ClothingCard(clothing, onClick = { onAction(ClothingListAction.OnCoinClick(clothing)) }, modifier = Modifier.padding(0.dp,8.dp,8.dp, 0.dp))
+            ClothingCard(clothing, onClick = { onAction(ClothingListAction.OnClothingClick(clothing)) }, modifier = Modifier.padding(0.dp,8.dp,8.dp, 0.dp))
         }
     }
 }

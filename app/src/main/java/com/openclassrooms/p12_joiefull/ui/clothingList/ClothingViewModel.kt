@@ -38,7 +38,7 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
 
     fun onAction(action: ClothingListAction) {
         when (action) {
-            is ClothingListAction.OnCoinClick -> {
+            is ClothingListAction.OnClothingClick -> {
                 //change selected clothing
                 _selectedClothing.update {
                     action.clothing

@@ -4,5 +4,5 @@ import com.openclassrooms.p12_joiefull.domain.Clothing
 
 
 sealed interface ClothingListAction {
-    data class OnCoinClick(val clothing: Clothing): ClothingListAction
+    data class OnClothingClick(val clothing: Clothing): ClothingListAction
 }
