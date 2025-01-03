@@ -8,6 +8,7 @@ import androidx.compose.material3.adaptive.layout.SupportingPaneScaffold
 import androidx.compose.material3.adaptive.layout.SupportingPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.rememberSupportingPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,6 +22,7 @@ import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingListOfLists
 import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingViewModel
 import com.openclassrooms.p12_joiefull.ui.clothing_detail.DetailScreen
 import com.openclassrooms.p12_joiefull.ui.shared_components.LoadingScreen
+import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
@@ -29,6 +31,10 @@ fun AdaptiveClothingGridDetailPane(
     viewModel: ClothingViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(0) {
+        viewModel.loadClothing().collect()
+    }
     val clothingState by viewModel.selectedClothing.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
@@ -62,11 +68,18 @@ fun AdaptiveClothingGridDetailPane(
                         state = state,
                         onAction = {
                             viewModel.onAction(it)
+                            //collect state
+
+
                             when (it) {
                                 is ClothingListAction.OnClothingClick -> {
                                     navigator.navigateTo(
                                         SupportingPaneScaffoldRole.Supporting
                                     )
+                                }
+
+                                is ClothingListAction.OnLikeClick -> {
+                                    // Do nothing
                                 }
                             }
                         }
@@ -77,7 +90,10 @@ fun AdaptiveClothingGridDetailPane(
                 AnimatedPane {
                     if (clothing != null) {
                         DetailScreen(
-                            clothing = clothing
+                            clothing = clothing,
+                            onAction = {
+                                viewModel.onAction(it)
+                            }
                         )
                     }
                 }

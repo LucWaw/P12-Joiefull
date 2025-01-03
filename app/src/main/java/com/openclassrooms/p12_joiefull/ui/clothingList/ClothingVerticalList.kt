@@ -21,7 +21,7 @@ fun ClothingVerticalList(clothes: List<Clothing>,    onAction: (ClothingListActi
                          modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(stringResource(clothes[0].category.toRessourceString()), fontSize = 22.sp, fontWeight = FontWeight.Bold)
-        ClothesList(onAction = onAction,clothes)
+        ClothesList(onAction = onAction, clothes)
     }
 }
 
@@ -29,7 +29,12 @@ fun ClothingVerticalList(clothes: List<Clothing>,    onAction: (ClothingListActi
 fun ClothesList(onAction: (ClothingListAction) -> Unit, clothes: List<Clothing>, modifier: Modifier = Modifier) {
     LazyRow(modifier = modifier) {
         items(clothes) { clothing ->
-            ClothingCard(clothing, onClick = { onAction(ClothingListAction.OnClothingClick(clothing)) }, modifier = Modifier.padding(0.dp,8.dp,8.dp, 0.dp))
+            ClothingCard(
+                clothing,
+                onClick = { onAction(ClothingListAction.OnClothingClick(clothing)) },
+                modifier = Modifier.padding(0.dp, 8.dp, 8.dp, 0.dp),
+                onLikeClick = { onAction(ClothingListAction.OnLikeClick(clothing)) }
+            )
         }
     }
 }

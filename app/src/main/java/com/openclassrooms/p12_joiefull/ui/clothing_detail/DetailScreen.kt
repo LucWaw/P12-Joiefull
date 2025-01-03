@@ -39,11 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.openclassrooms.p12_joiefull.R
 import com.openclassrooms.p12_joiefull.domain.Clothing
+import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingListAction
 import com.openclassrooms.p12_joiefull.ui.clothing_detail.components.ImageWithFavoriteShareAndBackButtons
 import com.openclassrooms.p12_joiefull.ui.shared_components.ClothingInformations
 
 @Composable
-fun DetailScreen(clothing: Clothing, modifier: Modifier = Modifier) {
+fun DetailScreen(clothing: Clothing, modifier: Modifier = Modifier, onAction: (ClothingListAction) -> Unit) {
 
     val fontSize = 18.sp
     val fontSizeDP: Dp = with(LocalDensity.current) {
@@ -55,7 +56,9 @@ fun DetailScreen(clothing: Clothing, modifier: Modifier = Modifier) {
         .verticalScroll(rememberScrollState())) {
         ImageWithFavoriteShareAndBackButtons(
             picture = clothing.picture,
-            likeNumber = clothing.likes
+            likeNumber = clothing.likes,
+            isLiked = clothing.isLiked,
+            onClickLike = { onAction(ClothingListAction.OnLikeClick(clothing)) },
         )
         ClothingInformations(
             clothing.price,
@@ -174,6 +177,7 @@ fun PreviewDetailScreen() {
                 url = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-avec-Jetpack-Compose/refs/heads/main/img/tops/2.jpg",
                 description = "Super T-shirt"
             )
-        )
+        ),
+        onAction = {}
     )
 }

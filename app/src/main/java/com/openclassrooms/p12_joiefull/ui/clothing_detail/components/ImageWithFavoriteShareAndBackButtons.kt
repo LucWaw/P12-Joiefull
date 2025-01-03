@@ -27,6 +27,8 @@ import com.openclassrooms.p12_joiefull.ui.shared_components.AddToFavorite
 fun ImageWithFavoriteShareAndBackButtons(
     picture: Clothing.Picture,
     likeNumber: Int,
+    isLiked: Boolean = false,
+    onClickLike: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
@@ -63,7 +65,9 @@ fun ImageWithFavoriteShareAndBackButtons(
 
 
         AddToFavorite(
+            onClickLike,
             likeNumber,
+            isLiked,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
@@ -79,6 +83,7 @@ private fun ImageWithFavoriteShareAndBackButtonsPreview() {
             url = "https://www.example.com/image.jpg",
             description = "A beautiful dress"
         ),
-        likeNumber = 5
+        likeNumber = 5,
+        onClickLike = {}
     )
 }

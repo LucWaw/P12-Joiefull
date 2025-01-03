@@ -17,8 +17,7 @@ fun ClothingListOfLists(
         items(state.clothing) { category ->
             ClothingVerticalList(
                 onAction = onAction,
-                clothes = category
-            )
+                clothes = category)
         }
     }
 }

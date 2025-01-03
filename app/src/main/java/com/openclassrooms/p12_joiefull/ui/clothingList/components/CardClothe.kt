@@ -26,6 +26,7 @@ import com.openclassrooms.p12_joiefull.ui.shared_components.ClothingInformations
 @Composable
 fun ClothingCard(
     clothing: Clothing, onClick: () -> Unit,
+    onLikeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val fontSize = 14.sp
@@ -35,7 +36,11 @@ fun ClothingCard(
     Column(modifier = modifier
         .clickable(onClick = onClick)
         .width(202.dp)) {
-        ImageWithFavoriteButton(clothing.picture, clothing.likes)
+        ImageWithFavoriteButton(
+            clothing.picture, clothing.likes,
+            onClickLike = { onLikeClick() },
+            isLiked = clothing.isLiked,
+        )
         ClothingInformations(
             clothing.price,
             clothing.name,
@@ -54,6 +59,8 @@ fun ClothingCard(
 fun ImageWithFavoriteButton(
     picture: Clothing.Picture,
     likeNumber: Int,
+    isLiked: Boolean,
+    onClickLike: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
@@ -68,7 +75,9 @@ fun ImageWithFavoriteButton(
         )
 
         AddToFavorite(
+            onClickLike,
             likeNumber,
+            isLiked,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(12.dp)
