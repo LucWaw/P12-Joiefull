@@ -44,4 +44,4 @@ fun ResponseApiClothingItem.toClothing(): Clothing =
             url = picture.url
         ),
         price = price
-    )
+        )

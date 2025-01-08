@@ -27,6 +27,7 @@ import com.openclassrooms.p12_joiefull.ui.shared_components.AddToFavorite
 fun ImageWithFavoriteShareAndBackButtons(
     picture: Clothing.Picture,
     likeNumber: Int,
+    isBackButtonDisplayed : Boolean,
     isLiked: Boolean = false,
     onClickLike: () -> Unit,
     modifier: Modifier = Modifier
@@ -41,16 +42,20 @@ fun ImageWithFavoriteShareAndBackButtons(
             model = picture.url,
             contentDescription = picture.description,
         )
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = stringResource(
-                R.string.back
-            ),
-            tint = Color.Black,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
-        )
+
+        if (isBackButtonDisplayed){
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(
+                    R.string.back
+                ),
+                tint = Color.Black,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
+            )
+        }
+        
 
         Icon(
             painter = painterResource(id = R.drawable.share),
@@ -84,6 +89,7 @@ private fun ImageWithFavoriteShareAndBackButtonsPreview() {
             description = "A beautiful dress"
         ),
         likeNumber = 5,
+        isBackButtonDisplayed = true,
         onClickLike = {}
     )
 }

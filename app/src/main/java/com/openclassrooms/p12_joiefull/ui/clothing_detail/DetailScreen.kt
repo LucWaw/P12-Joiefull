@@ -44,17 +44,23 @@ import com.openclassrooms.p12_joiefull.ui.clothing_detail.components.ImageWithFa
 import com.openclassrooms.p12_joiefull.ui.shared_components.ClothingInformations
 
 @Composable
-fun DetailScreen(clothing: Clothing, modifier: Modifier = Modifier, onAction: (ClothingListAction) -> Unit) {
+fun DetailScreen(
+    clothing: Clothing, isBackButtonDisplayed: Boolean,
+    modifier: Modifier = Modifier, onAction: (ClothingListAction) -> Unit
+) {
 
     val fontSize = 18.sp
     val fontSizeDP: Dp = with(LocalDensity.current) {
         fontSize.toDp() + 3.dp
     }
 
-    Column(modifier = modifier
-        .padding(16.dp)
-        .verticalScroll(rememberScrollState())) {
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
         ImageWithFavoriteShareAndBackButtons(
+            isBackButtonDisplayed = isBackButtonDisplayed,
             picture = clothing.picture,
             likeNumber = clothing.likes,
             isLiked = clothing.isLiked,
@@ -64,6 +70,7 @@ fun DetailScreen(clothing: Clothing, modifier: Modifier = Modifier, onAction: (C
             clothing.price,
             clothing.name,
             clothing.originalPrice,
+            clothing.getAverageRating(),
             fontSize,
             fontSizeDP,
             contentPadding = PaddingValues(top = 24.dp, bottom = 12.dp),
@@ -73,13 +80,23 @@ fun DetailScreen(clothing: Clothing, modifier: Modifier = Modifier, onAction: (C
 
         Text(text = "${clothing.picture.description}.", fontSize = 14.sp)
 
-        UserImageWithRatingBar()
-
-        val text = stringResource(R.string.share_comment)
-
         val textState = remember {
             mutableStateOf("")
         }
+
+        UserImageWithRatingBar(onClickRating = { rating ->
+            textState.value = ""
+            onAction(
+                ClothingListAction.OnAddReviewClick(
+                    clothing,
+                    Clothing.Review(textState.value, rating, 0)
+                )
+            )
+        })
+
+        val text = stringResource(R.string.share_comment)
+
+
         OutlinedTextField(
             placeholder = { Text(text = text) },
             value = textState.value,
@@ -93,11 +110,12 @@ fun DetailScreen(clothing: Clothing, modifier: Modifier = Modifier, onAction: (C
 }
 
 @Composable
-fun UserImageWithRatingBar(modifier: Modifier = Modifier) {
-    Row (modifier = modifier.padding(top=24.dp, bottom = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+fun UserImageWithRatingBar(onClickRating: (Int) -> Unit, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier.padding(top = 24.dp, bottom = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ){
+    ) {
         Image(
             painter = painterResource(id = R.drawable.user_picture),
             contentDescription = "User picture",
@@ -115,10 +133,10 @@ fun UserImageWithRatingBar(modifier: Modifier = Modifier) {
             rating = rating,
             onRatingChanged = {
                 rating = it
+                onClickRating(rating)
             }
         )
     }
-
 }
 
 @Composable
@@ -178,6 +196,6 @@ fun PreviewDetailScreen() {
                 description = "Super T-shirt"
             )
         ),
-        onAction = {}
-    )
+        isBackButtonDisplayed = true,
+        onAction = {})
 }

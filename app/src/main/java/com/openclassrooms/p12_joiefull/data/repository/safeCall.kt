@@ -1,6 +1,6 @@
 package com.openclassrooms.p12_joiefull.data.repository
 
-import com.openclassrooms.p12_joiefull.domain.util.NetworkError
+import com.openclassrooms.p12_joiefull.domain.util.PossibleError
 import com.openclassrooms.p12_joiefull.domain.util.Result
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
@@ -12,20 +12,20 @@ import kotlin.coroutines.coroutineContext
 
 suspend inline fun <reified T> safeCall(
     execute: () -> Response<T>
-): Result<T, NetworkError> {
+): Result<T, PossibleError> {
     val response = try {
         execute()
     } catch (e: UnresolvedAddressException) {
-        return Result.Error(NetworkError.NO_INTERNET)
+        return Result.Error(PossibleError.NO_INTERNET)
     } catch (e: UnknownHostException) {
-        return Result.Error(NetworkError.NO_INTERNET)
+        return Result.Error(PossibleError.NO_INTERNET)
     } catch (e: JsonDataException) {
-        return Result.Error(NetworkError.SERIALIZATION)
+        return Result.Error(PossibleError.SERIALIZATION)
     } catch (e: JsonEncodingException) {
-        return Result.Error(NetworkError.SERIALIZATION)
+        return Result.Error(PossibleError.SERIALIZATION)
     } catch (e: Exception) {
         coroutineContext.ensureActive()
-        return Result.Error(NetworkError.UNKNOWN)
+        return Result.Error(PossibleError.UNKNOWN)
     }
 
     return responseToResult(response)

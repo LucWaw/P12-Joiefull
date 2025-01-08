@@ -23,12 +23,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.p12_joiefull.R
+import java.util.Locale
 
 @Composable
 fun ClothingInformations(
     price: Double,
     name: String,
     originalPrice: Double,
+    rating : Double,
     fontSize: TextUnit,
     fontSizeDP: Dp,
     contentPadding: PaddingValues,
@@ -36,6 +38,9 @@ fun ClothingInformations(
     maxLines: Int,
     modifier: Modifier = Modifier
 ) {
+    val stringRating = if (rating.isNaN()) stringResource(R.string.no_rating) else String.format(
+        Locale.FRANCE,"%.1f", rating)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.padding(contentPadding)
@@ -45,7 +50,7 @@ fun ClothingInformations(
                 name,
                 fontSize = fontSize,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.width(textWidth),
+                modifier = Modifier.width(if (rating.isNaN()) textWidth -30.dp else textWidth),
                 maxLines = maxLines
             )
             Text("${price}€", fontSize = fontSize)
@@ -64,7 +69,7 @@ fun ClothingInformations(
                     tint = Color.Unspecified,
                     modifier = Modifier.size(fontSizeDP)
                 )
-                Text("4.3", fontSize = fontSize)
+                Text(stringRating, fontSize = fontSize)
             }
 
             Text(

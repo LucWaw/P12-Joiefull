@@ -17,4 +17,6 @@
     <string name="back">Go Back</string>
     <string name="ratingStar">Rating star</string>
     <string name="share_comment">Share your impressions of this piece here</string>
+    <string name="no_rating">Unrated</string>
+    <string name="rating_error">Review Updated !</string>
 </resources>

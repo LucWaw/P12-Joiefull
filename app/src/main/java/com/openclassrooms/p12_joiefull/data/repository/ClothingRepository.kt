@@ -4,7 +4,7 @@ import com.openclassrooms.p12_joiefull.data.network.ClothingApi
 import com.openclassrooms.p12_joiefull.data.response.ResponseApiClothingItem
 import com.openclassrooms.p12_joiefull.data.response.toClothing
 import com.openclassrooms.p12_joiefull.domain.Clothing
-import com.openclassrooms.p12_joiefull.domain.util.NetworkError
+import com.openclassrooms.p12_joiefull.domain.util.PossibleError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,7 +15,7 @@ import com.openclassrooms.p12_joiefull.domain.util.map
 
 
 class ClothingRepository(private val clothingClient: ClothingApi) {
-    fun callClothingApi(): Flow<Result<List<Clothing>, NetworkError>> =
+    fun callClothingApi(): Flow<Result<List<Clothing>, PossibleError>> =
         flow {
             emit(Result.Loading)
 
@@ -27,6 +27,6 @@ class ClothingRepository(private val clothingClient: ClothingApi) {
 
             emit(result)
         }.catch {
-            emit(Result.Error(NetworkError.UNKNOWN))
+            emit(Result.Error(PossibleError.UNKNOWN))
         }.flowOn(Dispatchers.IO)
 }

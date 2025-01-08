@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
+import androidx.compose.material3.adaptive.layout.PaneAdaptedValue
 import androidx.compose.material3.adaptive.layout.SupportingPaneScaffold
 import androidx.compose.material3.adaptive.layout.SupportingPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.rememberSupportingPaneScaffoldNavigator
@@ -56,6 +57,8 @@ fun AdaptiveClothingGridDetailPane(
     }
     val clothing = clothingState
 
+
+
     if (state.isLoading) {
         LoadingScreen()
     } else {
@@ -68,19 +71,12 @@ fun AdaptiveClothingGridDetailPane(
                         state = state,
                         onAction = {
                             viewModel.onAction(it)
-                            //collect state
 
 
-                            when (it) {
-                                is ClothingListAction.OnClothingClick -> {
-                                    navigator.navigateTo(
-                                        SupportingPaneScaffoldRole.Supporting
-                                    )
-                                }
-
-                                is ClothingListAction.OnLikeClick -> {
-                                    // Do nothing
-                                }
+                            if (it is ClothingListAction.OnClothingClick) {
+                                navigator.navigateTo(
+                                    SupportingPaneScaffoldRole.Supporting
+                                )
                             }
                         }
                     )
@@ -91,6 +87,7 @@ fun AdaptiveClothingGridDetailPane(
                     if (clothing != null) {
                         DetailScreen(
                             clothing = clothing,
+                            isBackButtonDisplayed = navigator.scaffoldValue[SupportingPaneScaffoldRole.Main] == PaneAdaptedValue.Hidden,
                             onAction = {
                                 viewModel.onAction(it)
                             }

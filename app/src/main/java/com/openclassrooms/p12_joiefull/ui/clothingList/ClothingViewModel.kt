@@ -1,9 +1,11 @@
 package com.openclassrooms.p12_joiefull.ui.clothingList
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.openclassrooms.p12_joiefull.data.repository.ClothingRepository
 import com.openclassrooms.p12_joiefull.domain.Clothing
-import com.openclassrooms.p12_joiefull.domain.util.NetworkError
+import com.openclassrooms.p12_joiefull.domain.util.PossibleError
 import com.openclassrooms.p12_joiefull.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +38,7 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
             is ClothingListAction.OnClothingClick -> {
                 _selectedClothing.update { action.clothing }
             }
+
 
             is ClothingListAction.OnLikeClick -> {
 
@@ -61,72 +65,39 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
                     state.value.clothing.flatten().find { it.id == action.clothing.id }
                 }
             }
+
+            is ClothingListAction.OnAddReviewClick -> {
+
+                Log.d("ClothingViewModel", "onAction: ${action.review}")
+                val updatedReviews = action.clothing.getReviewsWithNewReview(action.review, 0)
+                val updatedClothing = _state.value.clothing.map { categoryList ->
+                    categoryList.map { clothing ->
+                        if (clothing.id == action.clothing.id) {
+                            clothing.copy(reviews = updatedReviews.first)
+                        } else {
+                            clothing
+                        }
+                    }.toMutableList()
+                }
+                _state.update { currentState ->
+                    currentState.copy(clothing = updatedClothing)
+                }
+                _selectedClothing.update {
+                    state.value.clothing.flatten().find { it.id == action.clothing.id }
+                }
+                if (updatedReviews.second != null && updatedReviews.second!!.name == PossibleError.RATING_ERROR.name) {
+                    //call _events.send in a coroutine
+
+                    viewModelScope.launch {
+                        _events.send(ClothingListEvent.Error(PossibleError.RATING_ERROR))
+                    }
+
+                }
+            }
         }
     }
 
-
-    /*fun onAction(action: ClothingListAction) {
-        when (action) {
-            is ClothingListAction.OnClothingClick -> {
-                //change selected clothing
-                _selectedClothing.update {
-                    action.clothing
-                }
-            }
-
-            is ClothingListAction.OnLikeClick -> {
-                //update the clothing in the list
-                Log.d("ClothingViewModel", "ClothingListAction.OnLikeClick")
-                Log.d("ClothingViewModel", "state.clothing: ${state.value.clothing}")
-
-                for (i in 0 until state.value.clothing.size) {
-                    for (j in 0 until state.value.clothing[i].size) {
-                        if (state.value.clothing[i][j].id == action.clothing.id) {
-                            state.value.clothing[i][j].likes++ //No recomposition
-                        }
-                    }
-                }
-
-
-
-                /*state.value.clothing.forEach { category ->
-                    Log.d("ClothingViewModel", "category: $category")
-
-                    category.forEach { clothing ->
-                        Log.d("ClothingViewModel", "clothingBeforeIf: $clothing")
-
-                        if (clothing.id == action.clothing.id) {
-                            clothing.likes++
-                            /*Log.d("ClothingViewModel", "clothingInIF: $clothing")
-                            //new list with removed clothing
-                            val newClothingList = category.toMutableList()
-                            newClothingList.remove(clothing)
-                            //add the clothing with the new like status
-                            newClothingList.add(clothing.copy(likes = clothing.likes + 1))
-
-                            //new list of list with the new clothing
-                            val mutableList : MutableList<MutableList<Clothing>> = mutableListOf()
-                            for (list in state.value.clothing) {
-                                Log.d("ClothingViewModel", "list: $list")
-
-                                if (list[0].category == clothing.category) {
-                                    mutableList.add(newClothingList)
-                                    Log.d("ClothingViewModel", "newClothingList: $newClothingList")
-                                } else mutableList.add(list.toMutableList())
-                            }
-                            state.map {
-                                ClothingListState(isLoading = false, clothing = mutableList)
-                            }
-                            Log.d("ClothingViewModel", "mutableList: $mutableList")
-                            */
-                        }
-                    }
-                }*/
-            }
-        }
-    }*/
-
-    fun loadClothing(): Flow<Result<List<Clothing>, NetworkError>> {
+    fun loadClothing(): Flow<Result<List<Clothing>, PossibleError>> {
         return repository.callClothingApi()
             .onEach { result ->
                 when (result) {

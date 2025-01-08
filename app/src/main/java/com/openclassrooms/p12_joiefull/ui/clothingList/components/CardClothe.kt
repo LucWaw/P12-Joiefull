@@ -45,6 +45,7 @@ fun ClothingCard(
             clothing.price,
             clothing.name,
             clothing.originalPrice,
+            clothing.getAverageRating(),
             fontSize,
             fontSizeDP,
             contentPadding = PaddingValues(8.dp),
