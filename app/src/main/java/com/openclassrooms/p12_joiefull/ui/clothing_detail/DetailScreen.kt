@@ -46,6 +46,7 @@ import com.openclassrooms.p12_joiefull.ui.shared_components.ClothingInformations
 @Composable
 fun DetailScreen(
     clothing: Clothing, isBackButtonDisplayed: Boolean,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier, onAction: (ClothingListAction) -> Unit
 ) {
 
@@ -65,6 +66,7 @@ fun DetailScreen(
             likeNumber = clothing.likes,
             isLiked = clothing.isLiked,
             onClickLike = { onAction(ClothingListAction.OnLikeClick(clothing)) },
+            onBackClick = { onBackClick() }
         )
         ClothingInformations(
             clothing.price,
@@ -197,5 +199,7 @@ fun PreviewDetailScreen() {
             )
         ),
         isBackButtonDisplayed = true,
-        onAction = {})
+        onAction = {},
+        onBackClick = {}
+    )
 }

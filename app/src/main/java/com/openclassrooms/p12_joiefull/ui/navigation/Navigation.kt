@@ -90,6 +90,9 @@ fun AdaptiveClothingGridDetailPane(
                             isBackButtonDisplayed = navigator.scaffoldValue[SupportingPaneScaffoldRole.Main] == PaneAdaptedValue.Hidden,
                             onAction = {
                                 viewModel.onAction(it)
+                            },
+                            onBackClick = {
+                                navigator.navigateBack()
                             }
                         )
                     }
