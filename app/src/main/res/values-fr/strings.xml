@@ -20,4 +20,8 @@
     <string name="share_comment">Partagez ici vos impressions sur cette pièce</string>
     <string name="no_rating">Non noté</string>
     <string name="rating_error">"Note mise à jour ! "</string>
+    <string name="dismiss">Cancel</string>
+    <string name="confirm">Confirmer</string>
+    <string name="your_comment">Votre commentaire</string>
+    <string name="share_with_a_comment">Partager avec un commentaire !</string>
 </resources>

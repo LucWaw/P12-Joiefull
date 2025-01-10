@@ -15,6 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
+import androidx.navigation.toRoute
 import com.openclassrooms.p12_joiefull.domain.util.toString
 import com.openclassrooms.p12_joiefull.ui.ObserveAsEvents
 import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingListAction
@@ -24,6 +29,16 @@ import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingViewModel
 import com.openclassrooms.p12_joiefull.ui.clothing_detail.DetailScreen
 import com.openclassrooms.p12_joiefull.ui.shared_components.LoadingScreen
 import kotlinx.coroutines.flow.collect
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class DeepLinkScreen(val id: Int)
+
+@Serializable
+data object HomeScreen
+
+const val DEEPLINK_DOMAIN = "joiefull"
+
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
@@ -50,13 +65,14 @@ fun AdaptiveClothingGridDetailPane(
             }
         }
     }
-
+    val navController = rememberNavController()
     val navigator = rememberSupportingPaneScaffoldNavigator()
     BackHandler(navigator.canNavigateBack()) {
         navigator.navigateBack()
     }
     val clothing = clothingState
 
+    var rightScreenLocked = false
 
 
     if (state.isLoading) {
@@ -67,24 +83,60 @@ fun AdaptiveClothingGridDetailPane(
             value = navigator.scaffoldValue,
             mainPane = {
                 AnimatedPane {
-                    ClothingListOfLists(
-                        state = state,
-                        onAction = {
-                            viewModel.onAction(it)
+                    NavHost(
+                        navController = navController,
+                        startDestination = HomeScreen
+                    ) {
+                        composable<HomeScreen> {
+                            ClothingListOfLists(
+                                state = state,
+                                onAction = {
+                                    viewModel.onAction(it)
 
 
-                            if (it is ClothingListAction.OnClothingClick) {
-                                navigator.navigateTo(
-                                    SupportingPaneScaffoldRole.Supporting
+                                    if (it is ClothingListAction.OnClothingClick) {
+                                        navigator.navigateTo(
+                                            SupportingPaneScaffoldRole.Supporting
+                                        )
+                                    }
+                                }
+                            )
+                            rightScreenLocked = false
+                        }
+
+                        composable<DeepLinkScreen>(
+                            deepLinks = listOf(
+                                navDeepLink<DeepLinkScreen>(
+                                    basePath = "https://$DEEPLINK_DOMAIN",
                                 )
+                            )
+                        ) { composableRoute ->
+                            val id = composableRoute.toRoute<DeepLinkScreen>().id
+
+                            val clothingFromState = state.clothing.flatten().find { it.id == id }
+
+
+                            if (clothingFromState != null) {
+                                DetailScreen(
+                                    clothing = clothingFromState,
+                                    isBackButtonDisplayed = navigator.scaffoldValue[SupportingPaneScaffoldRole.Main] == PaneAdaptedValue.Hidden,
+                                    onAction = {
+                                        viewModel.onAction(it)
+                                    },
+                                    onBackClick = {
+                                        navigator.navigateBack()
+                                    }
+                                )
+                                rightScreenLocked = true
                             }
                         }
-                    )
+                    }
+
                 }
             },
             supportingPane = {
                 AnimatedPane {
-                    if (clothing != null) {
+                    if (clothing != null && !rightScreenLocked) {
                         DetailScreen(
                             clothing = clothing,
                             isBackButtonDisplayed = navigator.scaffoldValue[SupportingPaneScaffoldRole.Main] == PaneAdaptedValue.Hidden,

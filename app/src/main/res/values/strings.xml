@@ -19,4 +19,8 @@
     <string name="share_comment">Share your impressions of this piece here</string>
     <string name="no_rating">Unrated</string>
     <string name="rating_error">Review Updated !</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="confirm">Confirm</string>
+    <string name="your_comment">Your comment</string>
+    <string name="share_with_a_comment">Share with a comment!</string>
 </resources>

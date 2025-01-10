@@ -1,6 +1,5 @@
 package com.openclassrooms.p12_joiefull.ui.clothingList
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.p12_joiefull.data.repository.ClothingRepository
@@ -68,7 +67,6 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
 
             is ClothingListAction.OnAddReviewClick -> {
 
-                Log.d("ClothingViewModel", "onAction: ${action.review}")
                 val updatedReviews = action.clothing.getReviewsWithNewReview(action.review, 0)
                 val updatedClothing = _state.value.clothing.map { categoryList ->
                     categoryList.map { clothing ->

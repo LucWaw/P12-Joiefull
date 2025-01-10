@@ -65,6 +65,7 @@ fun DetailScreen(
             picture = clothing.picture,
             likeNumber = clothing.likes,
             isLiked = clothing.isLiked,
+            clothingId = clothing.id,
             onClickLike = { onAction(ClothingListAction.OnLikeClick(clothing)) },
             onBackClick = { onBackClick() }
         )
