@@ -40,6 +40,7 @@ fun ClothingCard(
             clothing.picture, clothing.likes,
             onClickLike = { onLikeClick() },
             isLiked = clothing.isLiked,
+            clothingName = clothing.name,
         )
         ClothingInformations(
             clothing.price,
@@ -61,6 +62,7 @@ fun ImageWithFavoriteButton(
     picture: Clothing.Picture,
     likeNumber: Int,
     isLiked: Boolean,
+    clothingName: String,
     onClickLike: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -78,6 +80,7 @@ fun ImageWithFavoriteButton(
         AddToFavorite(
             onClickLike,
             likeNumber,
+            clothingName,
             isLiked,
             modifier = Modifier
                 .align(Alignment.BottomEnd)

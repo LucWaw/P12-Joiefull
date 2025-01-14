@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">P12_Joiefull</string>
     <string name="average_star">Nombre moyen d\'étoiles</string>
-    <string name="add_to_favorite">Ajouter aux favoris</string>
     <string name="error_request_timeout">La demande a expiré.</string>
     <string name="error_too_many_requests">Il y a eu trop de demande.</string>
     <string name="error_no_internet">Impossible de se connecter au serveur, veuillez vérifier votre connexion internet.</string>
@@ -26,4 +25,6 @@
     <string name="share_with_a_comment">Partager avec un commentaire !</string>
     <string name="selected_star">Étoile sélectionné %1$s</string>
     <string name="unselected_star">Étoile non séléctionné %1$s</string>
+    <string name="remove_from_favorite">Supprimer %1$s des favoris</string>
+    <string name="add_to_favorite">Ajouter %1$s aux favoris</string>
 </resources>
