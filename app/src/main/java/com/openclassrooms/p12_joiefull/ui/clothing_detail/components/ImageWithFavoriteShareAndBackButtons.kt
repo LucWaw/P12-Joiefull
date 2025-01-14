@@ -162,7 +162,7 @@ fun OpenShareDialog(id: Int, showDialog: Boolean, onDismiss: () -> Unit) {
                         }
                         val context = LocalContext.current
                         TextButton(
-                            onClick = { onConfirmation("$comment, $shareString ", context) },
+                            onClick = { onConfirmation("$comment $shareString ", context) },
                             modifier = Modifier.padding(8.dp),
                         ) {
                             Text(stringResource(R.string.confirm))
