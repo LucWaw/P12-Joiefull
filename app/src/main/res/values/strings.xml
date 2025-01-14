@@ -23,4 +23,6 @@
     <string name="confirm">Confirm</string>
     <string name="your_comment">Your comment</string>
     <string name="share_with_a_comment">Share with a comment!</string>
+    <string name="selected_star">Selected star %1$s</string>
+    <string name="unselected_star">Unselected star %1$s</string>
 </resources>

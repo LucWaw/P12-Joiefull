@@ -1,5 +1,6 @@
 package com.openclassrooms.p12_joiefull.ui.clothing_detail
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,9 +46,11 @@ import com.openclassrooms.p12_joiefull.ui.shared_components.ClothingInformations
 
 @Composable
 fun DetailScreen(
-    clothing: Clothing, isBackButtonDisplayed: Boolean,
+    clothing: Clothing,
+    isBackButtonDisplayed: Boolean,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier, onAction: (ClothingListAction) -> Unit
+    modifier: Modifier = Modifier,
+    onAction: (ClothingListAction) -> Unit
 ) {
 
     val fontSize = 18.sp
@@ -60,15 +63,13 @@ fun DetailScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        ImageWithFavoriteShareAndBackButtons(
-            isBackButtonDisplayed = isBackButtonDisplayed,
+        ImageWithFavoriteShareAndBackButtons(isBackButtonDisplayed = isBackButtonDisplayed,
             picture = clothing.picture,
             likeNumber = clothing.likes,
             isLiked = clothing.isLiked,
             clothingId = clothing.id,
             onClickLike = { onAction(ClothingListAction.OnLikeClick(clothing)) },
-            onBackClick = { onBackClick() }
-        )
+            onBackClick = { onBackClick() })
         ClothingInformations(
             clothing.price,
             clothing.name,
@@ -91,8 +92,7 @@ fun DetailScreen(
             textState.value = ""
             onAction(
                 ClothingListAction.OnAddReviewClick(
-                    clothing,
-                    Clothing.Review(textState.value, rating, 0)
+                    clothing, Clothing.Review(textState.value, rating, 0)
                 )
             )
         })
@@ -100,14 +100,12 @@ fun DetailScreen(
         val text = stringResource(R.string.share_comment)
 
 
-        OutlinedTextField(
-            placeholder = { Text(text = text) },
+        OutlinedTextField(placeholder = { Text(text = text) },
             value = textState.value,
             onValueChange = { textState.value = it },
             shape = RoundedCornerShape(10.dp),
             minLines = 2,
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -131,30 +129,26 @@ fun UserImageWithRatingBar(onClickRating: (Int) -> Unit, modifier: Modifier = Mo
 
         var rating by remember { mutableIntStateOf(0) } //default rating will be 0
 
-        StarRatingBar(
-            maxStars = 5,
-            rating = rating,
-            onRatingChanged = {
-                rating = it
-                onClickRating(rating)
-            }
-        )
+        StarRatingBar(maxStars = 5, rating = rating, onRatingChanged = {
+            rating = it
+            onClickRating(rating)
+        })
     }
 }
 
 @Composable
 fun StarRatingBar(
-    maxStars: Int = 5,
-    rating: Int,
-    onRatingChanged: (Int) -> Unit
+    maxStars: Int = 5, rating: Int, onRatingChanged: (Int) -> Unit
 ) {
     val density = LocalDensity.current.density
     val starSize = (12f * density).dp
+    Log.d("StarRatingBar", "starSize: $starSize")
+    Log.d("StarRatingBar", "starSize13: ${(13f * density).dp}")
 
     Row(
         modifier = Modifier.selectableGroup(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         for (i in 1..maxStars) {
             val isSelected = i <= rating
@@ -163,20 +157,19 @@ fun StarRatingBar(
                     id = R.drawable.star_rating_border
                 )
 
-            Icon(
-                painter = icon,
-                contentDescription = null,
+            Icon(painter = icon,
+                contentDescription = if (isSelected) stringResource(
+                    R.string.selected_star, i
+                ) else stringResource(
+                    R.string.unselected_star, i
+                ),
                 tint = Color.Unspecified,
                 modifier = Modifier
-                    .selectable(
-                        selected = isSelected,
-                        onClick = {
-                            onRatingChanged(i)
-                        }
-                    )
+                    .selectable(selected = isSelected, onClick = {
+                        onRatingChanged(i)
+                    })
                     .width(starSize)
-                    .height(starSize)
-            )
+                    .height(starSize))
 
 
         }
@@ -186,21 +179,16 @@ fun StarRatingBar(
 @Preview
 @Composable
 fun PreviewDetailScreen() {
-    DetailScreen(
-        clothing = Clothing(
-            id = 1,
-            name = "T-shirt",
-            price = 20.0,
-            originalPrice = 30.0,
-            likes = 4,
-            category = "TOPS",
-            picture = Clothing.Picture(
-                url = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-avec-Jetpack-Compose/refs/heads/main/img/tops/2.jpg",
-                description = "Super T-shirt"
-            )
-        ),
-        isBackButtonDisplayed = true,
-        onAction = {},
-        onBackClick = {}
-    )
+    DetailScreen(clothing = Clothing(
+        id = 1,
+        name = "T-shirt",
+        price = 20.0,
+        originalPrice = 30.0,
+        likes = 4,
+        category = "TOPS",
+        picture = Clothing.Picture(
+            url = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-avec-Jetpack-Compose/refs/heads/main/img/tops/2.jpg",
+            description = "Super T-shirt"
+        )
+    ), isBackButtonDisplayed = true, onAction = {}, onBackClick = {})
 }

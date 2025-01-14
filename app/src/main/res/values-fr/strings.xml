@@ -24,4 +24,6 @@
     <string name="confirm">Confirmer</string>
     <string name="your_comment">Votre commentaire</string>
     <string name="share_with_a_comment">Partager avec un commentaire !</string>
+    <string name="selected_star">Étoile sélectionné %1$s</string>
+    <string name="unselected_star">Étoile non séléctionné %1$s</string>
 </resources>
