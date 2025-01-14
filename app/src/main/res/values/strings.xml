@@ -26,4 +26,5 @@
     <string name="unselected_star">Unselected star %1$s</string>
     <string name="remove_from_favorite">Remove %1$s from favorite</string>
     <string name="add_to_favorite">Add %1$s to favorite</string>
+    <string name="original_price">Original price : %1$s€</string>
 </resources>

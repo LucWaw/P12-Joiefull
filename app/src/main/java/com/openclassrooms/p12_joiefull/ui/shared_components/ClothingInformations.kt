@@ -17,6 +17,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.text
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
@@ -30,7 +33,7 @@ fun ClothingInformations(
     price: Double,
     name: String,
     originalPrice: Double,
-    rating : Double,
+    rating: Double,
     fontSize: TextUnit,
     fontSizeDP: Dp,
     contentPadding: PaddingValues,
@@ -39,7 +42,8 @@ fun ClothingInformations(
     modifier: Modifier = Modifier
 ) {
     val stringRating = if (rating.isNaN()) stringResource(R.string.no_rating) else String.format(
-        Locale.FRANCE,"%.1f", rating)
+        Locale.FRANCE, "%.1f", rating
+    )
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -50,7 +54,7 @@ fun ClothingInformations(
                 name,
                 fontSize = fontSize,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.width(if (rating.isNaN()) textWidth -30.dp else textWidth),
+                modifier = Modifier.width(if (rating.isNaN()) textWidth - 30.dp else textWidth),
                 maxLines = maxLines
             )
             Text("${price}€", fontSize = fontSize)
@@ -71,9 +75,13 @@ fun ClothingInformations(
                 )
                 Text(stringRating, fontSize = fontSize)
             }
-
+            val stringOriginalPrice = stringResource(R.string.original_price, originalPrice)
             Text(
-                modifier = Modifier.alpha(0.7f),
+                modifier = Modifier
+                    .alpha(0.7f)
+                    .semantics {
+                        text = AnnotatedString(stringOriginalPrice)
+                    },
                 textDecoration = TextDecoration.LineThrough,
                 text = "${originalPrice}€",
                 fontSize = fontSize
