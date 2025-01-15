@@ -150,7 +150,7 @@ fun StarRatingBar(
     Row(
         modifier = Modifier.selectableGroup(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(18.dp)
+        horizontalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         for (i in 1..maxStars) {
             val isSelected = i <= rating
@@ -160,10 +160,8 @@ fun StarRatingBar(
                 )
 
             Icon(painter = icon,
-                contentDescription = if (isSelected) stringResource(
+                contentDescription = stringResource(
                     R.string.selected_star, i
-                ) else stringResource(
-                    R.string.unselected_star, i
                 ),
                 tint = Color.Unspecified,
                 modifier = Modifier

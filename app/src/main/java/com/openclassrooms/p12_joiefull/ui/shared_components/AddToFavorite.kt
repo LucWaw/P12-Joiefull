@@ -23,7 +23,14 @@ import androidx.compose.ui.unit.sp
 import com.openclassrooms.p12_joiefull.R
 
 @Composable
-fun AddToFavorite(onClickLike: () -> Unit, likeNumber: Int, clothingName: String, isLiked: Boolean = false, modifier: Modifier = Modifier) {
+fun AddToFavorite(
+    onClickLike: () -> Unit,
+    likeNumber: Int,
+    clothingName: String,
+    isLiked: Boolean = false,
+    isDetail: Boolean = false,
+    modifier: Modifier = Modifier
+) {
     val fontSize = 14.sp
     val fontSizeDP: Dp = with(LocalDensity.current) {
         fontSize.toDp() + 3.dp
@@ -35,12 +42,26 @@ fun AddToFavorite(onClickLike: () -> Unit, likeNumber: Int, clothingName: String
             .clickable { onClickLike() },
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val contentDescription = if (isLiked && isDetail)
+            stringResource(R.string.is_detail) + stringResource(
+                R.string.remove_from_favorite,
+                clothingName
+            )
+        else if (!isLiked && isDetail)
+            stringResource(R.string.is_detail) + stringResource(
+                R.string.add_to_favorite,
+                clothingName
+            )
+        else if (isLiked)
+            stringResource(R.string.remove_from_favorite, clothingName)
+        else
+            stringResource(R.string.add_to_favorite, clothingName)
+
         Icon(
-            painter = if (isLiked) painterResource(id = R.drawable.baseline_favorite_24)else painterResource(id = R.drawable.baseline_favorite_border_24),
-            contentDescription = if (isLiked)
-                stringResource(R.string.remove_from_favorite, clothingName)
-            else
-                stringResource(R.string.add_to_favorite, clothingName),
+            painter = if (isLiked) painterResource(id = R.drawable.baseline_favorite_24) else painterResource(
+                id = R.drawable.baseline_favorite_border_24
+            ),
+            contentDescription = contentDescription,
             tint = Color.Unspecified,
             modifier = Modifier.size(fontSizeDP)
         )

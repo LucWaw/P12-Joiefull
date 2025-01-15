@@ -22,9 +22,9 @@
     <string name="confirm">Confirm</string>
     <string name="your_comment">Your comment</string>
     <string name="share_with_a_comment">Share with a comment!</string>
-    <string name="selected_star">Selected star %1$s</string>
-    <string name="unselected_star">Unselected star %1$s</string>
+    <string name="selected_star">Star %1$s</string>
     <string name="remove_from_favorite">Remove %1$s from favorite</string>
     <string name="add_to_favorite">Add %1$s to favorite</string>
     <string name="original_price">Original price : %1$s€</string>
+    <string name="is_detail">Detail view</string>
 </resources>

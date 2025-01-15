@@ -111,6 +111,7 @@ fun ImageWithFavoriteShareAndBackButtons(
             likeNumber,
             clothingName,
             isLiked,
+            true,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
