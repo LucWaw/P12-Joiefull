@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.sp
 import com.openclassrooms.p12_joiefull.R
 import com.openclassrooms.p12_joiefull.domain.Clothing
 import com.openclassrooms.p12_joiefull.ui.clothingList.ClothingListAction
-import com.openclassrooms.p12_joiefull.ui.clothing_detail.components.ImageWithFavoriteShareAndBackButtons
+import com.openclassrooms.p12_joiefull.ui.clothing_detail.components.ImageWithButtons
 import com.openclassrooms.p12_joiefull.ui.shared_components.ClothingInformations
 
 @Composable
@@ -63,7 +63,7 @@ fun DetailScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        ImageWithFavoriteShareAndBackButtons(isBackButtonDisplayed = isBackButtonDisplayed,
+        ImageWithButtons(isBackButtonDisplayed = isBackButtonDisplayed,
             picture = clothing.picture,
             likeNumber = clothing.likes,
             isLiked = clothing.isLiked,

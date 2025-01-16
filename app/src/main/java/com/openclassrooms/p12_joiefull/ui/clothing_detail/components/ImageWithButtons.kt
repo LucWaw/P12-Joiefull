@@ -44,7 +44,7 @@ import com.openclassrooms.p12_joiefull.ui.shared_components.AddToFavorite
 
 
 @Composable
-fun ImageWithFavoriteShareAndBackButtons(
+fun ImageWithButtons(
     picture: Clothing.Picture,
     clothingName: String,
     likeNumber: Int,
@@ -191,7 +191,7 @@ fun onConfirmation(sharedText: String, context: Context) {
 @Preview
 @Composable
 private fun ImageWithFavoriteShareAndBackButtonsPreview() {
-    ImageWithFavoriteShareAndBackButtons(
+    ImageWithButtons(
         picture = Clothing.Picture(
             url = "https://www.example.com/image.jpg",
             description = "A beautiful dress"
