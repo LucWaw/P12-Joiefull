@@ -2,6 +2,7 @@ package com.openclassrooms.p12_joiefull.ui.clothing_detail
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -163,7 +164,7 @@ fun StarRatingBar(
                 contentDescription = stringResource(
                     R.string.selected_star, i
                 ),
-                tint = Color.Unspecified,
+                tint = if (isSystemInDarkTheme() && !isSelected) Color.White else Color.Unspecified,
                 modifier = Modifier
                     .selectable(selected = isSelected, onClick = {
                         onRatingChanged(i)

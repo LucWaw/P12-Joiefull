@@ -66,6 +66,6 @@ fun AddToFavorite(
             modifier = Modifier.size(fontSizeDP)
         )
         Spacer(modifier = Modifier.width(4.dp))
-        Text(likeNumber.toString(), fontSize = fontSize)
+        Text(likeNumber.toString(), fontSize = fontSize, color = Color.Black)
     }
 }
