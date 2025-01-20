@@ -70,8 +70,11 @@ fun AdaptiveClothingGridDetailPane(
     BackHandler(navigator.canNavigateBack()) {
         navigator.navigateBack()
     }
+
+    // To remove custom getters
     val clothing = clothingState
 
+    // Lock the supporting screen when the detail screen is displayed after a click on a deep link to the detail screen
     var rightScreenLocked = false
 
 
@@ -101,6 +104,7 @@ fun AdaptiveClothingGridDetailPane(
                                     }
                                 }
                             )
+                            // Unlock the supporting screen when the home screen is displayed
                             rightScreenLocked = false
                         }
 
@@ -127,6 +131,7 @@ fun AdaptiveClothingGridDetailPane(
                                         navigator.navigateBack()
                                     }
                                 )
+                                // Lock the supporting screen when the detail screen is displayed after a click on a deep link to the detail screen
                                 rightScreenLocked = true
                             }
                         }

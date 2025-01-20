@@ -32,8 +32,16 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
     private val _events = Channel<ClothingListEvent>()
     val events = _events.receiveAsFlow()
 
+    /**
+     * Handle the actions from the UI
+     *
+     * @param action the action to handle
+     */
     fun onAction(action: ClothingListAction) {
         when (action) {
+
+            // Handle the action when the user clicks on a clothing
+            // To go to the detail screen
             is ClothingListAction.OnClothingClick -> {
                 _selectedClothing.update { action.clothing }
             }
@@ -61,6 +69,7 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
                     currentState.copy(clothing = updatedClothing)
                 }
                 _selectedClothing.update {
+                    //update the selected clothing to handle the detail screen state
                     state.value.clothing.flatten().find { it.id == action.clothing.id }
                 }
             }
@@ -83,11 +92,13 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
                 _selectedClothing.update {
                     state.value.clothing.flatten().find { it.id == action.clothing.id }
                 }
+
+                // Handle the action when there is already a review
                 if (updatedReviews.second != null && updatedReviews.second!!.name == PossibleError.RATING_ERROR.name) {
                     //call _events.send in a coroutine
-
                     viewModelScope.launch {
                         _events.send(ClothingListEvent.Error(PossibleError.RATING_ERROR))
+                        //event to toast that review is updated
                     }
 
                 }
@@ -95,6 +106,11 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
         }
     }
 
+    /**
+     * Load the clothing from the repository
+     *
+     * @return the flow of the result of the clothing list or possible error
+     */
     fun loadClothing(): Flow<Result<List<Clothing>, PossibleError>> {
         return repository.callClothingApi()
             .onEach { result ->
@@ -123,6 +139,13 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
             }
     }
 
+    /**
+     * Categorize the clothing by category
+     *
+     * @param clothes the list of clothing to categorize
+     *
+     * @return the list of clothing categorized
+     */
     private fun categorizeClothing(clothes: List<Clothing>): List<MutableList<Clothing>> {
         val listOfCategories = MutableList(4) { mutableListOf<Clothing>() }
         clothes.forEach { clothing ->
@@ -138,7 +161,13 @@ class ClothingViewModel @Inject constructor(private val repository: ClothingRepo
     }
 }
 
-
+/**
+ * In case the clothing is not in the list, add a new category to the list
+ * Also check if there is not a category with the same name in the list
+ *
+ * @param clothing the clothing to categorize
+ * @param listOfCategories the list of categories
+ */
 private fun isOutOfCategory(
     clothing: Clothing,
     listOfCategories: MutableList<MutableList<Clothing>>
