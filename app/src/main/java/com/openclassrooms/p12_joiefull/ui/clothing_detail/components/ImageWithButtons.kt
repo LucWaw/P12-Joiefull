@@ -2,7 +2,6 @@ package com.openclassrooms.p12_joiefull.ui.clothing_detail.components
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -133,10 +132,7 @@ fun OpenShareDialog(id: Int, showDialog: Boolean, onDismiss: () -> Unit) {
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier.padding(8.dp)
             ) {
-                Column(
-                    Modifier
-                        .background(Color.White)
-                ) {
+                Column {
                     Text(
                         text = stringResource(R.string.share_with_a_comment),
                         modifier = Modifier.padding(8.dp),
